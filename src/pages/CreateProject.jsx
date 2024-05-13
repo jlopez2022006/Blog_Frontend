@@ -5,6 +5,9 @@ import { Navbar } from '../components/Navbar';
 import { useState } from 'react';
 import { FiPaperclip } from "react-icons/fi";
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material'
+import TextField from '@mui/material/TextField';
+
 
 export const CreateProject = () => {
     const { createProject } = useProjects();
@@ -36,31 +39,46 @@ export const CreateProject = () => {
                 <div className="container mx-auto mt-8">
                     <div className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
                         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Create Project</h2>
-                        <input
-                            {...register("title", { required: true })}
-                            className="input w-full mb-4"
-                            placeholder="Title"
-                            type="text"
+                        <TextField
+                            {...register("title", { required: true })} // Registrar en el formulario con react-hook-form
+                            id="outlined-basic"
+                            label="Titulo"
+                            variant="outlined"
+                            fullWidth // Para ocupar todo el ancho disponible
+                            margin="normal" // Para agregar un margen
+                            required // Para hacerlo obligatorio
                         />
                         {errors.title && <p className="text-red-500">This field is required.</p>}
-                        <input
-                            {...register("code", { required: true })}
-                            className="input w-full mb-4"
-                            placeholder="Page Link"
-                            type="text"
+                        <TextField
+                            {...register("code", { required: true })} // Registrar en el formulario con react-hook-form
+                            id="outlined-basic"
+                            label="Page link"
+                            variant="outlined"
+                            fullWidth // Para ocupar todo el ancho disponible
+                            margin="normal" // Para agregar un margen
+                            required // Para hacerlo obligatorio
                         />
                         {errors.code && <p className="text-red-500">This field is required.</p>}
-                        <textarea
-                            {...register("description", { required: true })}
-                            className="input w-full mb-4 h-32"
-                            placeholder="Description"
+                        <TextField
+                            {...register("description", { required: true })} // Registrar en el formulario con react-hook-form
+                            id="standard-basic"
+                            label="Description"
+                            variant="standard"
+                            multiline // Para permitir múltiples líneas
+                            rows={4} // Altura inicial de 4 líneas
+                            fullWidth // Para ocupar todo el ancho disponible
+                            margin="normal" // Para agregar un margen
+                            required // Para hacerlo obligatorio
                         />
                         {errors.description && <p className="text-red-500">This field is required.</p>}
-                        <input
-                            {...register("course", { required: true })}
-                            className="input w-full mb-4"
-                            placeholder="Course"
-                            type="text"
+                        <TextField
+                            {...register("course", { required: true })} // Registrar en el formulario con react-hook-form
+                            id="outlined-basic"
+                            label="Curso"
+                            variant="outlined"
+                            fullWidth // Para ocupar todo el ancho disponible
+                            margin="normal" // Para agregar un margen
+                            required // Para hacerlo obligatorio
                         />
                         {errors.course && <p className="text-red-500">This field is required.</p>}
                         <div className="flex items-center">
@@ -83,12 +101,7 @@ export const CreateProject = () => {
                             <Link to="/" className="btn bg-gray-400 text-white px-6 py-2 rounded-md mr-4 hover:bg-gray-500">
                                 Cancel
                             </Link>
-                            <button
-                                type="submit"
-                                className="btn bg-indigo-500 text-white px-6 py-2 rounded-md hover:bg-indigo-600"
-                            >
-                                Subir
-                            </button>
+                            <Button type='submit' variant="contained">Subir</Button>
                         </div>
                     </div>
                 </div>
