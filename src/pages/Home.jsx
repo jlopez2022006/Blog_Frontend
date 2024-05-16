@@ -1,43 +1,65 @@
-import React from 'react';
-import { Card } from '../components/Card';
-import { Navbar } from '../components/Navbar';
-import { Herosection } from '../components/Herosection';
-import { useProjects } from '../hooks/useProject';
-import { useEffect } from 'react';
-import { Footer } from '../components/Footer';
+import React, { useEffect, useState } from 'react';
+import PostCard from '../components/PostCard';
+import { Box, Container, Grid } from '@mui/material';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import axios from 'axios';
+import moment from 'moment';
+import Loader from '../components/Loader';
 
-export const Home = () => {
-    const { getProjects, isFetching, projects } = useProjects();
+const Home = () => {
+
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+
+    const showPosts = async () => {
+        setLoading(true);
+        try {
+            const { data } = await axios.get('/api/posts/show');
+            setPosts(data.posts);
+            setLoading(false);
+        } catch (error) {
+            console.log(error.response.data.error);
+        }
+    }
 
     useEffect(() => {
-        getProjects();
+        showPosts();
     }, []);
 
-    const updateProjects = () => {
-        getProjects();
-    };
 
     return (
         <>
-            <Navbar />
-            <Herosection />
-            <div className="bg-gray-100 py-12">
-                <div className="container mx-auto px-4">
-                    <h1 className="text-3xl font-bold text-center mb-8">Proyectos</h1>
-                    {isFetching ? (
-                        <div className="flex items-center justify-center h-48">
-                            <p className="text-gray-500 text-lg">Sin proyectos aun...</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {projects.map(project => (
-                                <Card key={project._id} data={project} updateProjects={updateProjects} />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
-            <Footer />
+            <Box sx={{ bgcolor: "#fafafa", minHeight: "100vh" }}>
+                <Navbar />
+                <Container sx={{ pt: 5, pb: 5, minHeight: "83vh" }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {
+                                loading ? <Loader /> :
+                                    posts && posts.map((post, index) => (
+                                        <Grid item xs={2} sm={4} md={4} key={index} >
+                                            <PostCard
+                                                id={post._id}
+                                                title={post.title}
+                                                content={post.content}
+                                                image={post.image ? post.image.url : ''}
+                                                subheader={moment(post.createdAt).format('MMMM DD, YYYY')}
+                                                comments={post.comments.length}
+                                                showPosts={showPosts}
+                                            />
+                                        </Grid>
+                                    ))
+                            }
+                        </Grid>
+                    </Box>
+
+                </Container>
+                <Footer />
+            </Box>
         </>
-    );
-};
+    )
+}
+
+export default Home
