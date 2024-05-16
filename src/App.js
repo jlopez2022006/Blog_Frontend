@@ -10,7 +10,7 @@ import AdminDashboard from './admin/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import UserRoute from './components/UserRoute';
 import CreatePost from './admin/CreatePost';
-import LogIn from './pages/LogIn';
+import LogIn from './pages/Login';
 import Register from './pages/Register';
 import Layout from './admin/global/Layout'
 import EditPost from './admin/EditPost';
